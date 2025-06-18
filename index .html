@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Community Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+        
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid #25D366;
+            font-weight: bold;
+            color: #25D366;
+        }
+        
+        .form-container {
+            display: none;
+        }
+        
+        .form-container.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #25D366;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background-color: #128C7E;
+        }
+        
+        .channel-container {
+            text-align: center;
+            padding: 30px 0;
+        }
+        
+        .channel-container h2 {
+            color: #25D366;
+            margin-bottom: 15px;
+        }
+        
+        .whatsapp-btn {
+            display: inline-block;
+            background-color: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        
+        .message {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="main-container">
+        <!-- Tab Navigation -->
+        <div class="tab-container">
+            <div class="tab active" data-tab="register">Register</div>
+            <div class="tab" data-tab="login">Login</div>
+            <div class="tab" data-tab="channel">Channel</div>
+        </div>
+        
+        <!-- Registration Form -->
+        <div class="form-container active" id="register-form">
+            <h2>Create Account</h2>
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="reg-name">Full Name</label>
+                    <input type="text" id="reg-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">Email</label>
+                    <input type="email" id="reg-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" required>
+                </div>
+                <button type="submit">Register</button>
+            </form>
+            <div class="message">
+                Already have an account? <a href="#" class="switch-tab" data-tab="login">Login</a>
+            </div>
+        </div>
+        
+        <!-- Login Form -->
+        <div class="form-container" id="login-form">
+            <h2>Welcome Back</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <div class="message">
+                New user? <a href="#" class="switch-tab" data-tab="register">Register</a>
+            </div>
+        </div>
+        
+        <!-- WhatsApp Channel -->
+        <div class="form-container" id="channel-container">
+            <div class="channel-container">
+                <h2>Join Our WhatsApp Channel</h2>
+                <p>Get exclusive updates and content</p>
+                <a href="https://whatsapp.com/channel/0029Vb6Jg9hHQbS05d7suj2B" class="whatsapp-btn" target="_blank">
+                    Join Now
+                </a>
+            </div>
+            <div class="message">
+                <a href="#" class="switch-tab" data-tab="login">Back to Login</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        document.querySelectorAll('.tab, .switch-tab').forEach(element => {
+            element.addEventListener('click', function(e) {
+                e.preventDefault();
+                const tab = this.dataset.tab;
+                
+                // Update active tab
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelector(`.tab[data-tab="${tab}"]`).classList.add('active');
+                
+                // Show corresponding form
+                document.querySelectorAll('.form-container').forEach(f => f.classList.remove('active'));
+                document.getElementById(`${tab}-form`).classList.add('active');
+            });
+        });
+        
+        // Registration form handling
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            alert(`Registration successful, ${name}! Redirecting to login...`);
+            
+            // Simulate registration process
+            setTimeout(() => {
+                document.querySelector(`.tab[data-tab="login"]`).click();
+            }, 1500);
+        });
+        
+        // Login form handling
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            alert(`Welcome back! Redirecting to WhatsApp channel...`);
+            
+            // Simulate login process
+            setTimeout(() => {
+                document.querySelector(`.tab[data-tab="channel"]`).click();
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
